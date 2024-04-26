@@ -4,7 +4,8 @@ CA                12.01000	; sp2 C pure aromatic (benzene)
 CB                12.01000	; sp2 aromatic C, 5&6 membered ring junction
 CC                12.01000	; sp2 aromatic C, 5 memb. ring HIS
 CD                12.01000      ;
-CI                12.01000      ;
+CI                12.01000      ; sp3 Perez 
+CJ                12.01000      ; sp3 by Perez modified for Zgarbova and Jurecka
 CK                12.01000	; sp2 C 5 memb.ring in purines
 CM                12.01000	; sp2 C  pyrimidines in pos. 5 & 6
 CN                12.01000	; sp2 C aromatic 5&6 memb.ring junct.(TRP)
@@ -22,8 +23,11 @@ CZ                12.01000      ;
 C*                12.01000	; sp2 arom. 5 memb.ring w/1 subst. (TRP)
 2C                12.01000      ;
 3C                12.01000      ;
+C1                12.01000      ; sp2 for chiOL4
+C2                12.01000      ; sp2 for chiOL4
 C4                12.01000      ;
 C5                12.01000      ;
+C7                12.01000      ;
 C8                12.01000      ;
 C0                40.08000	; calcium
 F                 19.00000	; fluorine

@@ -24,6 +24,7 @@ class xMD(MD_Experiment):
                        search=None, 
                        config_files=None, 
                        topology_files=None, 
+                       restraints=None,
                        rep=None, 
                        md_steps:int=None):
         """
@@ -40,7 +41,8 @@ class xMD(MD_Experiment):
         self.set_replicate(rep)
         self.prepare_simulation(search,
                                 config_files=config_files,
-                                topology_files=topology_files)
+                                topology_files=topology_files,
+                                restraints=restraints)
         if md_steps is None:
             md_steps = len(self.config_files)
         if len(self.config_files) == 1:
@@ -52,7 +54,7 @@ class xMD(MD_Experiment):
         self.run_analysis(traj_file=traj_file, tpr_path=tpr_path, pdb_top=pdb_top_file)
 
     ## TODO add repeat steps - run for as many mdp files are provided.
-    def run_MD_step(self):
+    def run_MD_step(self): # add MIG compatibility, MIG can only be used on the final config file provided
         """
         This will run the steps of MD for the trial.
         Retruns the tpr file name.
@@ -62,18 +64,20 @@ class xMD(MD_Experiment):
 
         assert isinstance(md_mdp, list), "md_mdp must be a list of mdp files"
 
-        for mdp in md_mdp:
+        self.set_trajectory_number() 
 
+        for idx, mdp in enumerate(md_mdp):
             input_path = run_MD(mdp, 
                                 input_path, 
                                 topo_path, 
                                 tpr_path, 
                                 self.gmx[0],
+                                self.restraints[idx],
                                 self.settings.gpu)
-            
-            self.set_trajectory_number()
-
-            _,_,_, tpr_path = super().run_MD_step() 
+            # the last step should not be repeated
+            if idx < len(md_mdp)-1:
+                self.traj_no += 1
+                _,_,_, tpr_path = super().run_MD_step() 
     
             # add log file to tensorboard as text
         return tpr_path
@@ -84,7 +88,8 @@ class xMD(MD_Experiment):
         
         traj_file, tpr_path, pdb_path = super().run_analysis(traj_file, tpr_path, pdb_top)
 
-        
+        # change this to - concatenate and align the xtc files to the first frame of the trajectory
         traj_to_pdb(traj_file,
                     pdb_top,
-                    pdb_path)
+                    pdb_path,
+                    self.gmx[0])

@@ -92,22 +92,24 @@ class MD_Experiment(Experiment):
         Converts the trajectory file to correct for pbc.
         Returns the corrected trajectory file name.
         """
+        gmx = self.gmx[0]
+        # change this to find all xtc files in the directory - concatenate them and then correct PBC
+
         traj_file = tpr_path.replace(".tpr", ".xtc")
         traj_file1 = traj_file.split(".")[-2] + self.settings.pbc_extensions[0] + ".xtc"
         traj_file2 = traj_file.split(".")[-2] + self.settings.pbc_extensions[1] + ".xtc"
         
-        trjconv_command1 = ["gmx", "trjconv",
+        trjconv_command1 = [gmx, "trjconv",
                              "-f", traj_file, 
                              "-s", tpr_path, 
                              *self.settings.pbc_commands[0], 
                              "-o", traj_file1]
         
-        trjconv_command2 = ["gmx", "trjconv", 
+        trjconv_command2 = [gmx, "trjconv", 
                              "-f", traj_file1, 
                              "-s", tpr_path, 
                              *self.settings.pbc_commands[1], 
-                             "-o", traj_file2,
-                             "-dump", "0"]
+                             "-o", traj_file2]
         
         print("Running trjconv command 1: ", trjconv_command1)
         subprocess.run(trjconv_command1, input=b"1\n0\n", check=True)
@@ -117,14 +119,15 @@ class MD_Experiment(Experiment):
 
         pdb_file = traj_file2.replace(".xtc", ".pdb")
         
-        # trjconv_command3 = ["gmx", "trjconv", 
-        #                      "-f", traj_file1, 
-        #                      "-s", tpr_path, 
-        #                      *self.settings.pbc_commands[1], 
-        #                      "-o", pdb_file,
+        trjconv_command3 = [gmx, "trjconv", 
+                             "-f", traj_file1, 
+                             "-s", tpr_path, 
+                             *self.settings.pbc_commands[1], 
+                             "-o", pdb_file,
+                                "-dump", "0"]
 
-        # print("Running trjconv command 3: ", trjconv_command3)
-        # subprocess.run(trjconv_command3, input=b"1\n0\n", check=True)  
+        print("Running trjconv command 3: ", trjconv_command3)
+        subprocess.run(trjconv_command3, input=b"1\n0\n", check=True)  
 
         return traj_file2, pdb_file
 
@@ -138,10 +141,24 @@ class MD_Experiment(Experiment):
 
         return traj_file2, pdb_file
 
-    def prepare_simulation(self, search=None, config_files: list = None, topology_files: list = None):
+    def prepare_simulation(self, search=None, 
+                           config_files: list = None, 
+                           topology_files: list = None, 
+                           restraints: list = None):
         """
         This will prepare the simulation for the trial.
         """
+
+        if restraints is not None:
+
+            if isinstance(restraints, str):
+                restraints = [restraints]*len(config_files)
+        else:
+            restraints = [None]*len(config_files)
+
+        assert len(restraints) == len(config_files), "Number of restraints must match number of config files"
+        self.restraints = restraints
+
         self.prepare_config(config_files)
         self.prepare_input_files(search, topology_files)
         self.load_input_files()

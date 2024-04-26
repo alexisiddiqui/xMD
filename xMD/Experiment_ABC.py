@@ -32,6 +32,7 @@ class Experiment(ABC):
 
         self.config_files = []
         self.topology_files = []
+        self.restraints = []
         if pdbcode is not None:
             self.settings.pdbcode = pdbcode
         self.generate_path_structure(self.name)
@@ -304,4 +305,7 @@ class Experiment(ABC):
                                   key=lambda x: int(x.split("_")[-1].split(".")[0]))
 
         # return traj_no
-        return int(trajectory_files[-1].split("_")[-1].split(".")[0])
+        try:
+            return int(trajectory_files[-1].split("_")[-1].split(".")[0])
+        except:
+            return 0
