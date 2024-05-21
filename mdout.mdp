@@ -2,7 +2,7 @@
 ;	File 'mdout.mdp' was generated
 ;	By user: alexi (1000)
 ;	On host: Celestial
-;	At date: Fri Apr 26 14:58:35 2024
+;	At date: Mon May  6 15:16:39 2024
 ;
 ;	Created by:
 ;	              :-) GROMACS - gmx grompp, 2021.4-plumed-2.8.0 (-:
@@ -11,21 +11,21 @@
 ;	Data prefix:  /usr/local/gromacs
 ;	Working dir:  /home/alexi/Documents/xMD
 ;	Command line:
-;	  gmx_mpi grompp -f config/2_equil.mdp -c data/MD/HOIP/HOIP_test/R_1/HOIP_apo697_1_af_sample_127_10000_protonated_em.gro -p data/MD/HOIP/HOIP_test/R_1/HOIP_apo697_1_af_sample_127_10000_protonated.top -o data/MD/HOIP/HOIP_test/R_1/APO_md_HOIP_0.tpr -r /home/alexi/Documents/xMD/clean_top/HOIP_apo697_1_af_sample_127_10000_protonated/HOIP_apo697_1_af_sample_127_10000_protonated_solv_ions.gro -maxwarn 1 -v
+;	  gmx_mpi grompp -f config/7_relax.mdp -c data/MD/HOIP/HOIP_test/R_1/APO_md_HOIP_4.gro -p data/MD/HOIP/HOIP_test/R_1/HOIP_apo697_1_af_sample_127_10000_protonated.top -o data/MD/HOIP/HOIP_test/R_1/APO_md_HOIP_5.tpr -r clean_top/HOIP_apo697_1_af_sample_127_10000_protonated/HOIP_apo697_1_af_sample_127_10000_protonated_solv_ions.gro -maxwarn 1 -v
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.
 ; e.g.: -I/home/joe/doe -I/home/mary/roe
 include                  = 
 ; e.g.: -DPOSRES -DFLEXIBLE (note these variable names are case sensitive)
-define                   = -DPOSRES -DPOSRES_FC=500.0
+define                   = 
 
 ; RUN CONTROL PARAMETERS
 integrator               = md
 ; Start time and timestep in ps
 tinit                    = 0
-dt                       = 0.0005
-nsteps                   = 200000
+dt                       = 0.002
+nsteps                   = 5000000
 ; For exact run continuation or redoing part of a run
 init-step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
@@ -82,7 +82,7 @@ energygrps               =
 ; cut-off scheme (Verlet: particle based cut-offs)
 cutoff-scheme            = Verlet
 ; nblist update frequency
-nstlist                  = 100
+nstlist                  = 10
 ; Periodic boundary conditions: xyz, no, xy
 pbc                      = xyz
 periodic-molecules       = no
@@ -141,7 +141,7 @@ tc-grps                  = System
 tau-t                    = 1
 ref-t                    = 300
 ; pressure coupling     
-pcoupl                   = Berendsen
+pcoupl                   = Parrinello-Rahman
 pcoupltype               = Isotropic
 nstpcouple               = -1
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
@@ -167,7 +167,7 @@ annealing-time           =
 annealing-temp           = 
 
 ; GENERATE VELOCITIES FOR STARTUP RUN
-gen-vel                  = no
+gen-vel                  = yes
 gen-temp                 = 300
 gen-seed                 = -1
 
@@ -186,7 +186,7 @@ lincs-order              = 4
 ; Number of iterations in the final step of LINCS. 1 is fine for
 ; normal simulations, but use 2 to conserve energy in NVE runs.
 ; For energy minimization with constraints it should be 4 to 8.
-lincs-iter               = 8
+lincs-iter               = 1
 ; Lincs will write a warning to the stderr if in one step a bond
 ; rotates over more degrees than
 lincs-warnangle          = 30
