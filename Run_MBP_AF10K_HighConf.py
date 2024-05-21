@@ -1,6 +1,6 @@
 # %%
 # xMD testing
-import pandas as pd
+# import pandas as pd
 import os
 import sys
 from xMD.xMD import xMD
@@ -60,10 +60,12 @@ for i in range(1,5+1):
 # specify ARGS: -P, -R, -N
         md = xMD(settings, 'MBP_test', "MBP", i)
 
-        restrants = "/home/alexi/Documents/xMD/clean_top/MBP_wt_1_af_sample_127_10000_protonated/MBP_wt_1_af_sample_127_10000_protonated_solv_ions.gro"
+        # restrants = "/home/alexi/Documents/xMD/clean_top/MBP_wt_1_af_sample_127_10000_protonated/MBP_wt_1_af_sample_127_10000_protonated_solv_ions.gro"
         # md.check_args()
+        restrants = os.path.join(settings.topology,"MBP_wt_1_af_sample_127_10000_protonated_solv_ions.gro")
+
         md.create_directory_structure(overwrite=True)
-        md.run_experiment(search="MBP", config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp'], restraints=restrants)
+        md.run_experiment(search="MBP", config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax.mdp', '8_prod.mdp'], restraints=restrants)
 
         save_path = md.save_experiment()
 

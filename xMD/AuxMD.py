@@ -33,7 +33,7 @@ def run_MD(md_mdp: str,
     mdrun_command = [gmx, "mdrun", "-v", "-deffnm", tpr_path.replace(".tpr","")]
     # trying out different gpu options
     if gpu: 
-        mdrun_command.extend(["-pin", "on", "-update", "gpu", "-bonded", "gpu"])
+        mdrun_command.extend(["-update", "gpu", "-bonded", "gpu"])
     
     print(mdrun_command)
     subprocess.run(mdrun_command, check=True)
