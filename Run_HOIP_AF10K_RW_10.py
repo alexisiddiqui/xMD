@@ -1,6 +1,6 @@
 # %%
 # xMD testing
-import pandas as pd
+# import pandas as pd
 import os
 import sys
 from xMD.xMD import xMD
@@ -44,39 +44,38 @@ os.environ["GMXLIB"] = amber14sb_ff_path
 settings.suffix = "APO_md"
 settings.search = "APO"
 # settings.config = os.path.join(settings.config, "APO_MD60") 
-print(settings.config)
-settings.topology = os.path.join(settings.topology,"LXRa200_1_af_sample_127_10000_protonated")
-print(settings.topology)
-# make sure to turn on MPI for HPC 
-settings.gmx_mpi_on = True
 
+i = int(sys.argv[1])
+# i = 0
+base_top_dir = settings.topology
 
-
-
-
-for i in range(1,1+1):
 # specify ARGS: -P, -R, -N
-    try:
-# specify ARGS: -P, -R, -N
-        md = xMD(settings, 'LXRa_test', "LXRa", i)
+try:
+    protein = "HOIP_10"
 
-        restrants = "/home/alexi/Documents/xMD/clean_top/LXRa200_1_af_sample_127_10000_protonated/LXRa200_1_af_sample_127_10000_protonated_solv_ions.gro"
-        # md.check_args()
-        md.create_directory_structure(overwrite=True)
-        md.run_experiment(search="LXRa", config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax.mdp', '8_prod.mdp'], restraints=restrants)
+    name = f"{protein}_c{i}"
+    # settings.config = os.path.join(settings.config, "APO_MD60") 
+    print(settings.config)
+    settings.topology = os.path.join(base_top_dir, name)
+    print(settings.topology)
+    # make sure to turn on MPI for HPC 
+    settings.gmx_mpi_on = True
 
-        save_path = md.save_experiment()
+    md = xMD(settings, name, "HOIP", 1)
 
-    except:
-        print(f"Error in replicate {i}")
-        
+    # restrants = "/home/alexi/Documents/xMD/clean_top/HOIP_apo697_1_af_sample_127_10000_protonated/HOIP_apo697_1_af_sample_127_10000_protonated_solv_ions.gro"
+    restrants = os.path.join(settings.topology,f"{name}_solv_ions.gro")
+
+    md.create_directory_structure(overwrite=True)
+    md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp'], restraints=restrants)
+    # md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax_5ns.mdp', '8_prod_5ns.mdp'], restraints=restrants)
+
+    save_path = md.save_experiment()
 
 
-
-
-
-
-
+except Exception as e:
+    print(f"Error in replicate {i}: {str(e)}")
+    raise
 
 
 
