@@ -67,8 +67,8 @@ try:
     restrants = os.path.join(settings.topology,f"{name}_solv_ions.gro")
 
     md.create_directory_structure(overwrite=True)
-    md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp'], restraints=restrants)
-    # md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax_5ns.mdp', '8_prod_5ns.mdp'], restraints=restrants)
+    # md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp'], restraints=restrants)
+    md.run_experiment(search=name, config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax_5ns.mdp', '8_prod_10ns.mdp'], restraints=restrants)
 
     save_path = md.save_experiment()
 
