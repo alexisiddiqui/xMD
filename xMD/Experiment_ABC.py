@@ -180,21 +180,31 @@ class Experiment(ABC):
         ### TODO refactor this to use self.dirs
         topology_files = os.listdir(os.path.join(self.settings.topology))
         topology_files = [file 
-                        for file in topology_files 
-                        if self.settings.pdbcode in file.split(".")[-2]]  
+                        for file in topology_files]  
      
         print(f"Topology files for {self.settings.pdbcode}: ", topology_files)
         if search is None:
             search = self.settings.search
 
         if search is not None:
-            topology_files = [file 
+            _topology_files = [file 
                               for file in topology_files 
                               if search in file.split(".")[-2]]
-            
+        if len(_topology_files) == 0:
+            _topology_files =  [file 
+                                for file in topology_files 
+                                if self.settings.pdbcode in file.split(".")[-2]]
+
+    
         if file_names is not None:
-            topology_files = [file for file in topology_files if file in file_names]
-        
+            _topology_files = [file for file in topology_files if file in file_names]
+
+        if len(_topology_files) > 0:
+            topology_files = _topology_files
+        else:
+            print("No topology files found.")
+            raise FileNotFoundError
+
         self.topology_files = topology_files
         print("Loading topology files: ", self.topology_files)
 
