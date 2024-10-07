@@ -1,31 +1,31 @@
 ;
 ;	File 'mdout.mdp' was generated
-;	By user: alexi (1000)
-;	On host: Celestial
-;	At date: Thu May 23 23:39:33 2024
+;	By user: unknown (7515)
+;	On host: htc-g044
+;	At date: Fri Jun 14 07:45:48 2024
 ;
 ;	Created by:
-;	              :-) GROMACS - gmx grompp, 2021.4-plumed-2.8.0 (-:
+;	                :-) GROMACS - gmx grompp, 2021.3-MODIFIED (-:
 ;	
-;	Executable:   /usr/local/gromacs/bin/gmx_mpi
-;	Data prefix:  /usr/local/gromacs
-;	Working dir:  /home/alexi/Documents/xMD
+;	Executable:   /apps/system/easybuild/software/GROMACS/2021.3-foss-2021a-CUDA-11.3.1/bin/gmx_mpi
+;	Data prefix:  /apps/system/easybuild/software/GROMACS/2021.3-foss-2021a-CUDA-11.3.1
+;	Working dir:  /data/chem-cat/lina4225/xMD
 ;	Command line:
-;	  gmx_mpi grompp -f config/2_equil.mdp -c data/MD/BRD4/BRD4_6_c0/R_1/BRD4_6_c0_solv_ions.gro -p data/MD/BRD4/BRD4_6_c0/R_1/BRD4_6_c0.top -o data/MD/BRD4/BRD4_6_c0/R_1/APO_md_BRD4_0.tpr -r clean_top/BRD4_6_c0/BRD4_6_c0_solv_ions.gro -maxwarn 1 -v
+;	  gmx_mpi grompp -f config/8_prod.mdp -c data/MD/BRD4/BRD4b_6_c5/R_1/APO_md_BRD4_5.gro -p data/MD/BRD4/BRD4b_6_c5/R_1/BRD4b_6_c5.top -o data/MD/BRD4/BRD4b_6_c5/R_1/APO_md_BRD4_6.tpr -r clean_top/BRD4b_6_c5/BRD4b_6_c5_solv_ions.gro -maxwarn 1 -v
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.
 ; e.g.: -I/home/joe/doe -I/home/mary/roe
 include                  = 
 ; e.g.: -DPOSRES -DFLEXIBLE (note these variable names are case sensitive)
-define                   = -DPOSRES -DPOSRES_FC=500.0
+define                   = 
 
 ; RUN CONTROL PARAMETERS
 integrator               = md
 ; Start time and timestep in ps
 tinit                    = 0
-dt                       = 0.0005
-nsteps                   = 200000
+dt                       = 0.002
+nsteps                   = 10000000
 ; For exact run continuation or redoing part of a run
 init-step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
@@ -82,7 +82,7 @@ energygrps               =
 ; cut-off scheme (Verlet: particle based cut-offs)
 cutoff-scheme            = Verlet
 ; nblist update frequency
-nstlist                  = 100
+nstlist                  = 200
 ; Periodic boundary conditions: xyz, no, xy
 pbc                      = xyz
 periodic-molecules       = no
@@ -141,7 +141,7 @@ tc-grps                  = System
 tau-t                    = 1
 ref-t                    = 300
 ; pressure coupling     
-pcoupl                   = Berendsen
+pcoupl                   = Parrinello-Rahman
 pcoupltype               = Isotropic
 nstpcouple               = -1
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
@@ -186,7 +186,7 @@ lincs-order              = 4
 ; Number of iterations in the final step of LINCS. 1 is fine for
 ; normal simulations, but use 2 to conserve energy in NVE runs.
 ; For energy minimization with constraints it should be 4 to 8.
-lincs-iter               = 8
+lincs-iter               = 1
 ; Lincs will write a warning to the stderr if in one step a bond
 ; rotates over more degrees than
 lincs-warnangle          = 30

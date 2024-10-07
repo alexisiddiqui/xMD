@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem-per-cpu=8G
-#SBATCH --time=7-00:00:00
-#SBATCH --partition=long
+#SBATCH --time=48:00:00
+#SBATCH --partition=medium
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=1
 #SBATCH --clusters=htc

@@ -45,8 +45,8 @@ settings.suffix = "APO_md"
 settings.search = "APO"
 # settings.config = os.path.join(settings.config, "APO_MD60") 
 
-# i = int(sys.argv[1])
-i = 0
+i = int(sys.argv[1])
+# i = 0
 base_top_dir = settings.topology
 
 # specify ARGS: -P, -R, -N
