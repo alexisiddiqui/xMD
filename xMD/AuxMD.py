@@ -7,40 +7,59 @@ import subprocess
 import pandas as pd
 import argparse
 
+import os
+import subprocess
 
-def run_MD(md_mdp: str, 
-           input_path: str, 
-           topo_path: str, 
-           tpr_path: str, 
+import os
+import subprocess
+import os
+import subprocess
+
+def run_MD(md_mdp: str,
+           input_path: str,
+           topo_path: str,
+           tpr_path: str,
            gmx: str,
            restraints: str = None,
            gpu: bool = False):
-    
     if restraints is None:
         restraints = input_path
     
-    grompp_command = [gmx, "grompp", 
-                    "-f", md_mdp, 
-                    "-c", input_path, 
-                    "-p", topo_path, 
-                    "-o", tpr_path, 
-                    "-r", restraints, 
-                    "-maxwarn", "1",
-                    "-v"]
-    
+    grompp_command = [gmx, "grompp",
+                      "-f", md_mdp,
+                      "-c", input_path,
+                      "-p", topo_path,
+                      "-o", tpr_path,
+                      "-r", restraints,
+                      "-maxwarn", "1",
+                      "-v"]
     subprocess.run(grompp_command, check=True)
-    ### TODO add try except for gmx vs gmx_mpi
-    mdrun_command = [gmx, "mdrun", "-v", "-deffnm", tpr_path.replace(".tpr","")]
-    # trying out different gpu options
-    if gpu: 
-        mdrun_command.extend(["-update", "gpu", "-bonded", "gpu"])
-    
-    print(mdrun_command)
+
+    # Construct the mdrun command
+    mdrun_command = [gmx, "mdrun",
+                     "-v",
+                     "-deffnm", tpr_path.replace(".tpr", ""),
+                     "-pin", "on"]
+
+    if gpu:
+        # Get the number of GPUs
+        ngpus = int(os.environ.get('SLURM_GPUS_ON_NODE', '0'))
+        gpu_ids = "".join(str(i) for i in range(ngpus))
+        if ngpus > 1:
+            mdrun_command.extend(["-gpu_id", gpu_ids])
+            print(f"Using {ngpus} GPUs with IDs: {gpu_ids}")
+        elif ngpus == 1:
+            mdrun_command.extend(["-nb", "gpu", "-pme", "gpu", "-bonded", "gpu", "-update", "gpu"])
+            print(f"Using {ngpus} GPUs with IDs: {gpu_ids}")
+        else:
+            mdrun_command.extend(["-nb", "gpu", "-pme", "gpu", "-bonded", "gpu", "-update", "gpu"])
+            print("GPU flag set, but no GPUs detected in the SLURM environment.")
+
+    print(f"Running command: {' '.join(mdrun_command)}")
     subprocess.run(mdrun_command, check=True)
-
-    input_path = tpr_path.replace(".tpr",".gro")
+    
+    input_path = tpr_path.replace(".tpr", ".gro")
     return input_path
-
 
 def traj_to_pdb(traj_file: str,
                 top_path: str,

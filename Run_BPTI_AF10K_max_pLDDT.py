@@ -1,4 +1,5 @@
-# %%
+#!/usr/bin/env python3
+
 # xMD testing
 import pandas as pd
 import os
@@ -45,21 +46,20 @@ settings.suffix = "APO_md"
 settings.search = "APO"
 # settings.config = os.path.join(settings.config, "APO_MD60") 
 print(settings.config)
-settings.topology = os.path.join(settings.topology,"BPTI_60_1_af_sample_127_10000_protonated")
+settings.topology = os.path.join(settings.topology,"BPTI_60_1_af_sample_127_10000_protonated_max_plddt_1050")
 print(settings.topology)
 # make sure to turn on MPI for HPC 
 settings.gmx_mpi_on = True
 
 
 
-for i in range(1,1+1):
+for i in range(1,5+1):
 
     # specify ARGS: -P, -R, -N
     try:
         md = xMD(settings, 'BPTI_test', "BPTI_60", i)
 
-        restrants = "/home/alexi/Documents/xMD/clean_top/BPTI_60_1_af_sample_127_10000_protonated/BPTI_60_1_af_sample_127_10000_protonated_max_plddt_1050_solv_ions.gro"
-        
+        restrants =  os.path.join(settings.topology, "BPTI_60_1_af_sample_127_10000_protonated_max_plddt_1050_solv_ions.gro")
         md.create_directory_structure(overwrite=True)
         md.run_experiment(search="BPTI_60", config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax.mdp', '8_prod.mdp'], restraints=restrants)
 

@@ -51,7 +51,7 @@ base_top_dir = settings.topology
 
 # specify ARGS: -P, -R, -N
 try:
-    protein = "BRD4_6"
+    protein = "BRD4_10"
 
     name = f"{protein}_c{i}"
     # settings.config = os.path.join(settings.config, "APO_MD60") 

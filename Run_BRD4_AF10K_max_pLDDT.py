@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # %%
 # xMD testing
 import pandas as pd
@@ -45,7 +46,7 @@ settings.suffix = "APO_md"
 settings.search = "APO"
 # settings.config = os.path.join(settings.config, "APO_MD60") 
 print(settings.config)
-settings.topology = os.path.join(settings.topology,"BRD4_APO_484_1_af_sample_127_10000_protonated")
+settings.topology = os.path.join(settings.topology,"BRD4_APO_484_1_af_sample_127_10000_protonated_max_plddt_2399")
 print(settings.topology)
 # make sure to turn on MPI for HPC 
 settings.gmx_mpi_on = True

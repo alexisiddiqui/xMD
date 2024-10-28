@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # %%
 # xMD testing
 import pandas as pd
@@ -45,7 +46,7 @@ settings.suffix = "APO_md"
 settings.search = "APO"
 # settings.config = os.path.join(settings.config, "APO_MD60") 
 print(settings.config)
-settings.topology = os.path.join(settings.topology,"LXRa200_1_af_sample_127_10000_protonated")
+settings.topology = os.path.join(settings.topology,"LXRa200_1_af_sample_127_10000_protonated_max_plddt_476")
 print(settings.topology)
 # make sure to turn on MPI for HPC 
 settings.gmx_mpi_on = True
@@ -54,13 +55,13 @@ settings.gmx_mpi_on = True
 
 
 
-for i in range(1,1+1):
+for i in range(1,5+1):
 # specify ARGS: -P, -R, -N
     try:
 # specify ARGS: -P, -R, -N
         md = xMD(settings, 'LXRa_test', "LXRa", i)
 
-        restrants = "/home/alexi/Documents/xMD/clean_top/LXRa200_1_af_sample_127_10000_protonated/LXRa200_1_af_sample_127_10000_protonated_max_plddt_476_solv_ions.gro"
+        restrants = os.path.join(settings.topology,"LXRa200_1_af_sample_127_10000_protonated_max_plddt_476_solv_ions.gro")
         # md.check_args()
         md.create_directory_structure(overwrite=True)
         md.run_experiment(search="LXRa", config_files=['2_equil.mdp', '3_equil.mdp', '4_equil.mdp', '5_equil.mdp', '6_equil.mdp', '7_relax.mdp', '8_prod.mdp'], restraints=restrants)

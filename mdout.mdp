@@ -1,8 +1,8 @@
 ;
 ;	File 'mdout.mdp' was generated
 ;	By user: unknown (7515)
-;	On host: htc-g044
-;	At date: Fri Jun 14 07:45:48 2024
+;	On host: htc-g046
+;	At date: Fri Oct 25 11:58:48 2024
 ;
 ;	Created by:
 ;	                :-) GROMACS - gmx grompp, 2021.3-MODIFIED (-:
@@ -11,7 +11,7 @@
 ;	Data prefix:  /apps/system/easybuild/software/GROMACS/2021.3-foss-2021a-CUDA-11.3.1
 ;	Working dir:  /data/chem-cat/lina4225/xMD
 ;	Command line:
-;	  gmx_mpi grompp -f config/8_prod.mdp -c data/MD/BRD4/BRD4b_6_c5/R_1/APO_md_BRD4_5.gro -p data/MD/BRD4/BRD4b_6_c5/R_1/BRD4b_6_c5.top -o data/MD/BRD4/BRD4b_6_c5/R_1/APO_md_BRD4_6.tpr -r clean_top/BRD4b_6_c5/BRD4b_6_c5_solv_ions.gro -maxwarn 1 -v
+;	  gmx_mpi grompp -f config/8_prod.mdp -c data/MD/BRD4/BRD4_10_c9/R_1/APO_md_BRD4_5.gro -p data/MD/BRD4/BRD4_10_c9/R_1/BRD4_10_c9.top -o data/MD/BRD4/BRD4_10_c9/R_1/APO_md_BRD4_6.tpr -r clean_top/BRD4_10_c9/BRD4_10_c9_solv_ions.gro -maxwarn 1 -v
 
 ; VARIOUS PREPROCESSING OPTIONS
 ; Preprocessor information: use cpp syntax.

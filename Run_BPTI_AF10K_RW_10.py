@@ -66,7 +66,7 @@ for i in range(n): # this is the cluster number
         print(settings.topology)
 
 
-        md = xMD(settings, name, "P00974_60", 1) # 1 is the replicate number
+        md = xMD(settings, name, "BPTI_60", 1) # 1 is the replicate number
 
         restrants = os.path.join(settings.topology,f"{name}_solv_ions.gro")
 
